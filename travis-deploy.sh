@@ -20,11 +20,11 @@ if [ "$ARCH" == "amd64" ]; then
     sleep 15
     echo "Try again"
   done
-  until docker run --rm stefanscherer/winspector "$image:windows-amd64-$TRAVIS_TAG"
-  do
-    sleep 15
-    echo "Try again"
-  done
+#  until docker run --rm stefanscherer/winspector "$image:windows-amd64-$TRAVIS_TAG"
+#  do
+#    sleep 15
+#    echo "Try again"
+#  done
   set -e
 
   echo "Downloading docker client with manifest command"
@@ -41,7 +41,7 @@ if [ "$ARCH" == "amd64" ]; then
     "$image:linux-amd64-$TRAVIS_TAG" \
     "$image:linux-arm-$TRAVIS_TAG" \
     "$image:linux-arm64-$TRAVIS_TAG" \
-    "$image:windows-amd64-$TRAVIS_TAG"
+#    "$image:windows-amd64-$TRAVIS_TAG"
   ./docker manifest annotate "$image:$TRAVIS_TAG" "$image:linux-arm-$TRAVIS_TAG" --os linux --arch arm
   ./docker manifest annotate "$image:$TRAVIS_TAG" "$image:linux-arm64-$TRAVIS_TAG" --os linux --arch arm64
   ./docker -D manifest push "$image:$TRAVIS_TAG"
@@ -51,7 +51,7 @@ if [ "$ARCH" == "amd64" ]; then
     "$image:linux-amd64-$TRAVIS_TAG" \
     "$image:linux-arm-$TRAVIS_TAG" \
     "$image:linux-arm64-$TRAVIS_TAG" \
-    "$image:windows-amd64-$TRAVIS_TAG"
+#    "$image:windows-amd64-$TRAVIS_TAG"
   ./docker manifest annotate "$image:latest" "$image:linux-arm-$TRAVIS_TAG" --os linux --arch arm
   ./docker manifest annotate "$image:latest" "$image:linux-arm64-$TRAVIS_TAG" --os linux --arch arm64
   ./docker manifest -D push "$image:latest"
