@@ -1,3 +1,4 @@
+#
 FROM golang AS build
 
 COPY . /code
