@@ -24,4 +24,6 @@ if [ -d tmp ]; then
   rm -rf tmp
 fi
 
+docker info
+
 docker build -t whoami -f "Dockerfile.$ARCH" .

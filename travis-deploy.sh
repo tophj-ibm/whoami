@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+docker images
+
 image="stefanscherer/whoami"
 myimage="tophj/whoami"
 docker tag whoami "$myimage:linux-$ARCH-$TRAVIS_TAG"
@@ -9,7 +11,7 @@ docker push "$myimage:linux-$ARCH-$TRAVIS_TAG"
 if [ "$ARCH" == "amd64" ]; then
   set +e
   echo "Waiting for other images $myimage:linux-arm-$TRAVIS_TAG"
-  until docker run --rm stefanscherer/winspector "$miimage:linux-arm-$TRAVIS_TAG"
+  until docker run --rm stefanscherer/winspector "$myimage:linux-arm-$TRAVIS_TAG"
   do
     sleep 15
     echo "Try again"
