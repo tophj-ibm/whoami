@@ -3,14 +3,13 @@ set -e
 
 docker images
 
-image="stefanscherer/whoami"
-myimage="tophj/whoami"
-docker tag whoami "$myimage:linux-$ARCH-$TRAVIS_TAG"
-docker push "$myimage:linux-$ARCH-$TRAVIS_TAG"
+image="tophj/whoami"
+docker tag whoami "$image:linux-$ARCH-$TRAVIS_TAG"
+docker push "$image:linux-$ARCH-$TRAVIS_TAG"
 
 #if [ "$ARCH" == "amd64" ]; then
 #  set +e
-#  echo "Waiting for other images $myimage:linux-arm-$TRAVIS_TAG"
+#  echo "Waiting for other images $image:linux-arm-$TRAVIS_TAG"
 #  until docker run --rm stefanscherer/winspector "$image:linux-arm-$TRAVIS_TAG"
 #  do
 #    sleep 15
@@ -37,15 +36,15 @@ docker push "$myimage:linux-$ARCH-$TRAVIS_TAG"
   
   set -x
   
-  echo "Pushing manifest $myimage:$TRAVIS_TAG"
-  ./docker -D manifest create "$myimage:$TRAVIS_TAG" \
+  echo "Pushing manifest $image:$TRAVIS_TAG"
+  ./docker -D manifest create "$image:$TRAVIS_TAG" \
     "$image:linux-amd64-$TRAVIS_TAG" \
     "$image:linux-arm-$TRAVIS_TAG" \
     "$image:linux-arm64-$TRAVIS_TAG" \
     "$image:windows-amd64-$TRAVIS_TAG"
-  ./docker manifest annotate "$myimage:$TRAVIS_TAG" "$image:linux-arm-$TRAVIS_TAG" --os linux --arch arm
-  ./docker manifest annotate "$myimage:$TRAVIS_TAG" "$image:linux-arm64-$TRAVIS_TAG" --os linux --arch arm64
-  ./docker -D manifest push "$myimage:$TRAVIS_TAG"
+  ./docker manifest annotate "$image:$TRAVIS_TAG" "$image:linux-arm-$TRAVIS_TAG" --os linux --arch arm
+  ./docker manifest annotate "$image:$TRAVIS_TAG" "$image:linux-arm64-$TRAVIS_TAG" --os linux --arch arm64
+  ./docker -D manifest push "$image:$TRAVIS_TAG"
 
   echo "Pushing manifest $myimage:latest"
   ./docker -D manifest create "$myimage:latest" \
@@ -53,7 +52,7 @@ docker push "$myimage:linux-$ARCH-$TRAVIS_TAG"
     "$image:linux-arm-$TRAVIS_TAG" \
     "$image:linux-arm64-$TRAVIS_TAG" \
     "$image:windows-amd64-$TRAVIS_TAG"
-  ./docker manifest annotate "$myimage:latest" "$image:linux-arm-$TRAVIS_TAG" --os linux --arch arm
-  ./docker manifest annotate "$myimage:latest" "$image:linux-arm64-$TRAVIS_TAG" --os linux --arch arm64
-  ./docker manifest -D push "$myimage:latest"
+  ./docker manifest annotate "$image:latest" "$image:linux-arm-$TRAVIS_TAG" --os linux --arch arm
+  ./docker manifest annotate "$image:latest" "$image:linux-arm64-$TRAVIS_TAG" --os linux --arch arm64
+  ./docker manifest -D push "$image:latest"
 fi
