@@ -8,7 +8,7 @@ sudo apt-get install -y openssl
 sudo openssl s_client -connect $TARGET_REGISTRY:5000 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | sudo tee /usr/local/share/ca-certificates/$TARGET_REGISTRY.crt
 sudo update-ca-certificates
 sudo mkdir -p /etc/docker/certs.d/$TARGET_REGISTRY:5000
-sudo openssl s_client -connect $TARGET_REGISTRY:5000 -showcerts </dev/null 2>/dev/null | sudo openssl x509 -outform PEM | sudo tee /etc/docker/certs.d/$TARGET_REGISTRY:5000/ca.crt
+sudo openssl s_client -connect $TARGET_REGISTRY:5000 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | tee /etc/docker/certs.d/$TARGET_REGISTRY:5000/ca.crt
 sudo service docker restart
 sleep 7
 
@@ -45,7 +45,8 @@ docker push "$image:linux-$ARCH-$TRAVIS_TAG"
   mv docker-linux-amd64 docker
   chmod +x docker
   ./docker version
-  
+  whoami
+
   set -x
   
   echo "Pushing manifest $image:$TRAVIS_TAG"
