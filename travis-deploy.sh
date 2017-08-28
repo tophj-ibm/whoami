@@ -18,19 +18,19 @@ image="$TARGET_REGISTRY:5000/tophj/whoami"
 docker tag whoami "$image:linux-$ARCH-$TRAVIS_TAG"
 docker push "$image:linux-$ARCH-$TRAVIS_TAG"
 
-if [ "$ARCH" == "amd64" ]; then
-  set +e
-  echo "Waiting for other images $image:linux-arm-$TRAVIS_TAG"
-  until docker run --rm stefanscherer/winspector "$image:linux-arm-$TRAVIS_TAG"
-  do
-    sleep 15
-    echo "Try again"
-  done
-  until docker run --rm stefanscherer/winspector "$image:linux-arm64-$TRAVIS_TAG"
-  do
-    sleep 15
-    echo "Try again"
-  done
+#if [ "$ARCH" == "amd64" ]; then
+#  set +e
+#  echo "Waiting for other images $image:linux-arm-$TRAVIS_TAG"
+#  until docker run --rm stefanscherer/winspector "$image:linux-arm-$TRAVIS_TAG"
+#  do
+#    sleep 15
+#    echo "Try again"
+#  done
+#  until docker run --rm stefanscherer/winspector "$image:linux-arm64-$TRAVIS_TAG"
+#  do
+#    sleep 15
+#    echo "Try again"
+#  done
 #  until docker run --rm stefanscherer/winspector "$image:windows-amd64-$TRAVIS_TAG"
 #  do
 #    sleep 15
