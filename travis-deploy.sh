@@ -3,7 +3,7 @@ set -e
 
 docker images
 
-image="tophj/whoami"
+image="$REGISTRY/tophj/whoami"
 docker tag whoami "$image:linux-$ARCH-$TRAVIS_TAG"
 docker push "$image:linux-$ARCH-$TRAVIS_TAG"
 
