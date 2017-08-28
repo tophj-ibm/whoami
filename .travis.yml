@@ -12,8 +12,4 @@ env:
 script:
   - ./travis-build.sh
   - ./travis-test.sh
-  - >
-    if [ -n "$TRAVIS_TAG" ]; then
-      # push image
-      ./travis-deploy.sh
-    fi
+  - ./travis-deploy.sh

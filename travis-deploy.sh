@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-image="$TARGET_REGISTRY/tophj/whoami"
+echo "Starting deploy"
+image="$TARGET_REGISTRY:5000/tophj/whoami"
 docker tag whoami "$image:linux-$ARCH-$TRAVIS_TAG"
 docker push "$image:linux-$ARCH-$TRAVIS_TAG"
 
@@ -35,6 +36,7 @@ if [ "$ARCH" == "amd64" ]; then
   
 
   # installing cert
+  echo "Installing certs"
   apt-get install -y openssl
   mkdir -p /etc/docker/certs.d/$TARGET_REGISTRY:5000
   openssl s_client -connect $TARGET_REGISTRY:5000 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | tee /etc/docker/certs.d/$TARGET_REGISTRY:5000/ca.crt
