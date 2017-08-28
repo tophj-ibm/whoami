@@ -37,10 +37,14 @@ if [ "$ARCH" == "amd64" ]; then
 
   # installing cert
   echo "Installing certs"
-  apt-get install -y openssl
+  apt-get install -y curl openssl
+  curl -k https://$TARGET_REGISTRY/ca -o /usr/local/share/ca-certificates/$TARGET_REGISTRY.crt
+  update-ca-certificates
+  service docker restart
+
   mkdir -p /etc/docker/certs.d/$TARGET_REGISTRY:5000
   openssl s_client -connect $TARGET_REGISTRY:5000 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | tee /etc/docker/certs.d/$TARGET_REGISTRY:5000/ca.crt
-  /bin/systemctl restart docker.service
+  service docker restart
 
 
 
