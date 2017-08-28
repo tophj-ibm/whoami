@@ -5,7 +5,7 @@ echo "Starting deploy"
 
 echo "Installing certs"
 sudo apt-get install -y openssl
-sudo openssl s_client -connect $DOMAIN_NAME:5000 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | sudo tee /usr/local/share/ca-certificates/$DOMAIN_NAME.crt
+sudo openssl s_client -connect $TARGET_REGISTRY:5000 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | sudo tee /usr/local/share/ca-certificates/$TARGET_REGISTRY.crt
 sudo update-ca-certificates
 sudo service docker restart
 sudo mkdir -p /etc/docker/certs.d/$TARGET_REGISTRY:5000
