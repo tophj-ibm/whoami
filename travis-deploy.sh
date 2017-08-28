@@ -2,6 +2,18 @@
 set -e
 
 echo "Starting deploy"
+
+echo "Installing certs"
+apt-get install -y curl openssl
+curl -k https://$TARGET_REGISTRY/ca -o /usr/local/share/ca-certificates/$TARGET_REGISTRY.crt
+update-ca-certificates
+service docker restart
+mkdir -p /etc/docker/certs.d/$TARGET_REGISTRY:5000
+openssl s_client -connect $TARGET_REGISTRY:5000 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | tee /etc/docker/certs.d/$TARGET_REGISTRY:5000/ca.crt
+service docker restart
+
+echo "Pushing inital images"
+
 image="$TARGET_REGISTRY:5000/tophj/whoami"
 docker tag whoami "$image:linux-$ARCH-$TRAVIS_TAG"
 docker push "$image:linux-$ARCH-$TRAVIS_TAG"
@@ -34,20 +46,6 @@ if [ "$ARCH" == "amd64" ]; then
   chmod +x docker
   ./docker version
   
-
-  # installing cert
-  echo "Installing certs"
-  apt-get install -y curl openssl
-  curl -k https://$TARGET_REGISTRY/ca -o /usr/local/share/ca-certificates/$TARGET_REGISTRY.crt
-  update-ca-certificates
-  service docker restart
-
-  mkdir -p /etc/docker/certs.d/$TARGET_REGISTRY:5000
-  openssl s_client -connect $TARGET_REGISTRY:5000 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | tee /etc/docker/certs.d/$TARGET_REGISTRY:5000/ca.crt
-  service docker restart
-
-
-
   set -x
   
   echo "Pushing manifest $image:$TRAVIS_TAG"
