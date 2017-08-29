@@ -3,19 +3,9 @@ set -e
 
 echo "Starting deploy"
 
-echo "Installing certs"
-sudo apt-get install -y openssl
-sudo openssl s_client -connect $TARGET_REGISTRY:5000 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | sudo tee /usr/local/share/ca-certificates/$TARGET_REGISTRY.crt
-sudo update-ca-certificates
-sudo mkdir -p /etc/docker/certs.d/$TARGET_REGISTRY:5000
-sudo openssl s_client -connect $TARGET_REGISTRY:5000 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | sudo tee /etc/docker/certs.d/$TARGET_REGISTRY:5000/ca.crt
-sudo chmod -R 755 /etc/docker/
-sudo service docker restart
-sleep 7
-
 echo "Pushing inital images"
 
-image="$TARGET_REGISTRY:5000/tophj/whoami"
+image="tophj/whoami"
 docker tag whoami "$image:linux-$ARCH-$TRAVIS_TAG"
 docker push "$image:linux-$ARCH-$TRAVIS_TAG"
 if [ "$ARCH" == "amd64" ]; then
