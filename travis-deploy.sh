@@ -48,6 +48,10 @@ if [ "$ARCH" == "amd64" ]; then
   set -x
 
   docker tag $image:amd64 $image:amd64-2
+  docker push $image:amd64-2
+  docker images
+
+
   echo "Creating and pushing manifest list $image:$TRAVIS_TAG"
   ./docker -D manifest create "$image:$TRAVIS_TAG" \
     "$image:amd64" \
