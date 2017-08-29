@@ -18,8 +18,7 @@ echo "Pushing inital images"
 image="$TARGET_REGISTRY:5000/tophj/whoami"
 docker tag whoami "$image:linux-$ARCH-$TRAVIS_TAG"
 docker push "$image:linux-$ARCH-$TRAVIS_TAG"
-
-#if [ "$ARCH" == "amd64" ]; then
+if [ "$ARCH" == "amd64" ]; then
 #  set +e
 #  echo "Waiting for other images $image:linux-arm-$TRAVIS_TAG"
 #  until docker run --rm stefanscherer/winspector "$image:linux-arm-$TRAVIS_TAG"
@@ -54,7 +53,7 @@ docker push "$image:linux-$ARCH-$TRAVIS_TAG"
   echo "\/\/\\/\/\/\/\/\/\\/\/\/\\/\/\/\/\/\/\/\/\/\/\//\/\\/\/\/\/\/\/\/\/\/\/\/\/\/\/"
   set -x
   
-  echo "Pushing manifest $image:$TRAVIS_TAG"
+  echo "Creating and pushing manifest list $image:$TRAVIS_TAG"
   ./docker -D manifest create "$image:$TRAVIS_TAG" \
     "$image:linux-amd64-$TRAVIS_TAG" \
     "$image:linux-arm-$TRAVIS_TAG" \
@@ -62,15 +61,16 @@ docker push "$image:linux-$ARCH-$TRAVIS_TAG"
 #    "$image:windows-amd64-$TRAVIS_TAG"
   ./docker manifest annotate "$image:$TRAVIS_TAG" "$image:linux-arm-$TRAVIS_TAG" --os linux --arch arm
   ./docker manifest annotate "$image:$TRAVIS_TAG" "$image:linux-arm64-$TRAVIS_TAG" --os linux --arch arm64
+  sleep 5
   ./docker -D manifest push "$image:$TRAVIS_TAG"
 
-  echo "Pushing manifest $myimage:latest"
-  ./docker -D manifest create "$myimage:latest" \
-    "$image:linux-amd64-$TRAVIS_TAG" \
-    "$image:linux-arm-$TRAVIS_TAG" \
-    "$image:linux-arm64-$TRAVIS_TAG" \
+#  echo "Pushing manifest $image:latest"
+#  ./docker -D manifest create "$image:latest" \
+#    "$image:linux-amd64-$TRAVIS_TAG" \
+#    "$image:linux-arm-$TRAVIS_TAG" \
+#    "$image:linux-arm64-$TRAVIS_TAG" \
 #    "$image:windows-amd64-$TRAVIS_TAG"
-  ./docker manifest annotate "$image:latest" "$image:linux-arm-$TRAVIS_TAG" --os linux --arch arm
-  ./docker manifest annotate "$image:latest" "$image:linux-arm64-$TRAVIS_TAG" --os linux --arch arm64
-  ./docker -D manifest push "$image:latest"
+#  ./docker manifest annotate "$image:latest" "$image:linux-arm-$TRAVIS_TAG" --os linux --arch arm
+#  ./docker manifest annotate "$image:latest" "$image:linux-arm64-$TRAVIS_TAG" --os linux --arch arm64
+#  ./docker -D manifest push "$image:latest"
 fi
