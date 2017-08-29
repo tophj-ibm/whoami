@@ -13,18 +13,18 @@ image="tophj/whoami"
 docker tag whoami "$image:$ARCH"
 docker push "$image:$ARCH"
 if [ "$ARCH" == "amd64" ]; then
-  set +e
-  echo "Waiting for other images $image:linux-arm-$TRAVIS_TAG"
-  until docker run --rm stefanscherer/winspector "$image:$ARCH"
-  do
-    sleep 15
-    echo "Try again"
-  done
-  until docker run --rm stefanscherer/winspector "$image:$ARCH"
-  do
-    sleep 15
-    echo "Try again"
-  done
+#  set +e
+#  echo "Waiting for other images $image:linux-arm-$TRAVIS_TAG"
+#  until docker run --rm stefanscherer/winspector "$image:$ARCH"
+#  do
+#    sleep 15
+#    echo "Try again"
+#  done
+#  until docker run --rm stefanscherer/winspector "$image:$ARCH"
+#  do
+#    sleep 15
+#    echo "Try again"
+#  done
 #  until docker run --rm stefanscherer/winspector "$image:windows-amd64-$TRAVIS_TAG"
 #  do
 #    sleep 15
@@ -47,15 +47,17 @@ if [ "$ARCH" == "amd64" ]; then
   echo "\/\/\\/\/\/\/\/\/\\/\/\/\\/\/\/\/\/\/\/\/\/\/\//\/\\/\/\/\/\/\/\/\/\/\/\/\/\/\/"
   set -x
 
+  docker tag $image:amd64 $image:amd64-2
   echo "Creating and pushing manifest list $image:$TRAVIS_TAG"
   ./docker -D manifest create "$image:$TRAVIS_TAG" \
     "$image:amd64" \
-    "$image:arm" \
-    "$image:arm64" \
+    "$image:amd64-2"
+#    "$image:arm" \
+#    "$image:arm64" \
 #    "$image:windows-amd64-$TRAVIS_TAG"
-  ./docker manifest annotate "$image:$TRAVIS_TAG" "$image:arm" --os linux --arch arm
-  ./docker manifest annotate "$image:$TRAVIS_TAG" "$image:arm64" --os linux --arch arm64
-  sleep 5
+#  ./docker manifest annotate "$image:$TRAVIS_TAG" "$image:arm" --os linux --arch arm
+#  ./docker manifest annotate "$image:$TRAVIS_TAG" "$image:arm64" --os linux --arch arm64
+#  sleep 5
   ./docker -D manifest push "$image:$TRAVIS_TAG"
 
 #  echo "Pushing manifest $image:latest"

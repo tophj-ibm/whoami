@@ -5,8 +5,6 @@ services:
 
 env:
   matrix:
-    - ARCH=arm
-    - ARCH=arm64
     - ARCH=amd64
 
 script:
