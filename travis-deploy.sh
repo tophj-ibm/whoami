@@ -3,6 +3,10 @@ set -e
 
 echo "Starting deploy"
 
+echo "Logging in"
+docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+
+
 echo "Pushing inital images"
 
 image="tophj/whoami"
