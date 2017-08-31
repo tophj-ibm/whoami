@@ -3,10 +3,11 @@ set -e
 
 docker version
 uname -a
-echo "Updating Docker engine to 17.05.0"
-sudo service docker stop
-curl -fsSL https://get.docker.com/ | sudo sh
+#echo "Updating Docker engine to 17.05.0"
+#sudo service docker stop
+#curl -fsSL https://get.docker.com/ | sudo sh
 docker version
+export ARCH="amd64"
 
 if [ "$ARCH" != "amd64" ]; then
   # prepare qemu
@@ -26,4 +27,4 @@ fi
 
 docker info
 
-docker build -t whoami -f "Dockerfile.$ARCH" .
+#docker build -t whoami -f "Dockerfile.$ARCH" .
