@@ -52,8 +52,8 @@ if [ "$ARCH" == "amd64" ]; then
   docker images
 
   docker rmi whoami
-  docker rmi $image:amd64"
-  docker rmi $image:amd64-2"
+  docker rmi $image:amd64
+  docker rmi $image:amd64-2
 
   echo "Creating and pushing manifest list $image:$TRAVIS_TAG"
   ./docker -D manifest create "$image:$TRAVIS_TAG" \
